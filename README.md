@@ -40,12 +40,25 @@ La instalación necesita HTTPS (por ejemplo GitHub Pages) o `localhost`.
 
 Después de la primera visita con internet, el juego funciona sin conexión, incluidas las fuentes.
 
+### Vista previa al compartir
+
+Al compartir el enlace por WhatsApp u otras redes se muestra `icons/og-image.png` (1200×630) con el título y la descripción. Esas etiquetas están en el `<head>` de `index.html` y usan la URL pública `https://jcarcamob.github.io/matematica-1ro/`. Si cambias el dominio, actualízalas.
+
+WhatsApp guarda la vista previa de cada enlace. Si ya compartiste el enlace antes, prueba con una variante como `https://jcarcamob.github.io/matematica-1ro/?v=2`.
+
 ### Voz
 
 El juego usa la síntesis de voz del navegador y elige sola la voz femenina más natural en español que encuentre. La calidad depende del dispositivo:
 
 - **Computador:** Microsoft Edge trae voces neuronales, por ejemplo *Catalina* (Chile).
 - **iPhone, iPad o Mac:** descarga *Paulina* o *Mónica* (mejorada) en Ajustes › Accesibilidad › Contenido leído › Voces.
+
+<details>
+<summary>Secreto (spoiler)</summary>
+
+Tocar 5 veces seguidas el contador de estrellas, o escribir <code>boo</code> con el teclado, activa el **modo Halloween**: colores morados, naranjos y verde baba, con murciélagos y telarañas. Se desactiva igual y queda guardado en el navegador.
+
+</details>
 
 ## Privacidad
 
@@ -62,7 +75,7 @@ styles.css             estilos (modo claro y oscuro)
 app.js                 lógica del juego
 sw.js                  service worker (modo sin conexión)
 manifest.webmanifest   datos de la app instalable
-icons/                 íconos de la app
+icons/                 íconos de la app e imagen para compartir
 ```
 
 `app.js` está organizado en módulos:

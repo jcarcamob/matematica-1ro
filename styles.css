@@ -34,11 +34,12 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:2px solid var(--line);
   padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .top-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px}
-.brand{display:flex;align-items:center;gap:8px;background:none;border:0;padding:0}
+.brand{display:flex;align-items:center;gap:8px;background:none;border:0;padding:0;min-width:0;flex:1 1 auto;text-align:left}
+.brand b{overflow:hidden;text-overflow:ellipsis}
 .brand svg{width:42px;height:42px}
 .brand b{white-space:nowrap;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.2px}
 .brand b span{color:var(--decena)}
-.spacer{flex:1}
+.spacer{flex:0 0 4px}
 .pill{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border:0;border-radius:999px;padding:6px 12px;font-weight:700;font-size:16px;white-space:nowrap}
 .pill[aria-pressed="false"]{opacity:.5}
 .star{color:var(--unidad)}
@@ -188,3 +189,26 @@ main{max-width:880px;margin:0 auto;padding-block:18px 40px;padding-left:max(16px
   .pill .lbl{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- Secreto: modo Halloween (html[data-skin="halloween"]) ---------- */
+html:root[data-skin="halloween"]{
+  --paper:#120A1C; --grid:rgba(255,138,31,.07); --card:#1F1230; --ink:#F3E9FF; --muted:#B59CCB;
+  --decena:#7CFC4A; --decena-2:#3E9B1F; --unidad:#FF8A1F; --unidad-2:#C25A00;
+  --sky:#B47CFF; --coral:#FF4D6D; --ok:#7CFC4A; --line:#3A2452; --chip:#2B1840; --water:#7CFC4A;
+  --shadow:0 2px 0 rgba(0,0,0,.5); color-scheme:dark }
+html[data-skin="halloween"] body::after{content:"";position:fixed;right:0;top:calc(env(safe-area-inset-top,0px) + 58px);width:170px;height:170px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160' fill='none' stroke='%23E9DDF7' stroke-width='1.2'%3E%3Cpath d='M160 0 L0 160 M160 0 L40 160 M160 0 L90 160 M160 0 L0 110 M160 0 L0 50'/%3E%3Cpath d='M130 0 Q132 18 160 30 M95 0 Q100 40 160 62 M60 0 Q68 60 160 98 M28 0 Q40 90 160 135'/%3E%3C/svg%3E") no-repeat;opacity:.35;pointer-events:none;z-index:0}
+html[data-skin="halloween"] main{position:relative;z-index:1}
+html[data-skin="halloween"] .brand b::after{content:" 🎃"}
+html[data-skin="halloween"] .world{--hue:#2B1840 !important}
+html[data-skin="halloween"] .qcard,html[data-skin="halloween"] .world{box-shadow:0 0 0 1px rgba(255,138,31,.15),0 6px 18px rgba(0,0,0,.45)}
+html[data-skin="halloween"] .opt.right,html[data-skin="halloween"] .key.go,html[data-skin="halloween"] .btn.main,
+html[data-skin="halloween"] .bbtn.d,html[data-skin="halloween"] .du th:first-child,html[data-skin="halloween"] .dot.good{color:#120A1C}
+html[data-skin="halloween"] .say{background:var(--unidad);color:#120A1C}
+#spooky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#spooky span{position:absolute;left:-60px;top:calc(14% + var(--i) * 17%);font-size:30px;opacity:.55;
+  animation:spooky-fly calc(16s + var(--i) * 3s) linear infinite;animation-delay:calc(var(--i) * -5s)}
+@keyframes spooky-fly{0%{transform:translate(0,0)}50%{transform:translate(55vw,-24px)}100%{transform:translate(calc(100vw + 120px),0)}}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);transform:translateX(-50%);z-index:20;
+  background:var(--ink);color:var(--paper);font-weight:700;font-size:19px;padding:12px 20px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.3);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){#spooky span{animation:none;left:auto;right:calc(4% + var(--i) * 6%)}}

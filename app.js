@@ -69,7 +69,7 @@ const Sfx = {
     o.connect(a).connect(c.destination);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+d+.05); },
   play(kind){ if(!Store.data.sound)return; try{ this.ctx ||= new (window.AudioContext||window.webkitAudioContext)();
     if(kind==="ok"){this.tone(660,0,.15);this.tone(880,.12,.25);} else if(kind==="win"){[523,659,784,1047].forEach((f,i)=>this.tone(f,i*.13,.3));}
-    else if(kind==="tap"){this.tone(500,0,.06,"sine",.08);} else {this.tone(220,0,.25,"sine",.14);} }catch(e){} }
+    else if(kind==="tap"){this.tone(500,0,.06,"sine",.08);} else if(kind==="spooky"){[311,294,277,262].forEach((f,i)=>this.tone(f,i*.2,.45,"sawtooth",.05)); this.tone(147,0,1.1,"sine",.12);} else {this.tone(220,0,.25,"sine",.14);} }catch(e){} }
 };
 
 /* ---------- Ícono de retroalimentación (sin personaje) ---------- */
@@ -525,13 +525,36 @@ const Pwa = {
   }
 };
 
+/* ---------- Secreto: modo Halloween ----------
+   Se activa y desactiva tocando 5 veces seguidas el contador de estrellas
+   o escribiendo "boo" con el teclado. Solo cambia la apariencia. */
+const Spooky = {
+  taps:[], typed:"",
+  on(){ return document.documentElement.dataset.skin==="halloween"; },
+  apply(v,announce){ const r=document.documentElement;
+    if(v) r.dataset.skin="halloween"; else delete r.dataset.skin;
+    Store.data.spooky=!!v; Store.save(); this.decor(v);
+    if(announce){ this.toast(v?"🎃 ¡Modo Halloween!":"☀️ Volvimos a la normalidad"); Sfx.play(v?"spooky":"ok"); Voice.say(v?"Buuu. ¡Modo Halloween!":"Volvimos a la normalidad."); } },
+  toggle(){ this.apply(!this.on(),true); },
+  tap(){ const now=Date.now(); this.taps=this.taps.filter(t=>now-t<2000); this.taps.push(now);
+    if(this.taps.length>=5){ this.taps=[]; this.toggle(); } },
+  key(k){ this.typed=(this.typed+k.toLowerCase()).slice(-3); if(this.typed==="boo"){ this.typed=""; this.toggle(); } },
+  decor(v){ let layer=$("#spooky"); if(!v){ if(layer) layer.remove(); return; } if(layer) return;
+    layer=document.createElement("div"); layer.id="spooky"; layer.setAttribute("aria-hidden","true");
+    layer.innerHTML=["🦇","👻","🦇","🕷️","🦇"].map((e,i)=>`<span style="--i:${i}">${e}</span>`).join("");
+    document.body.appendChild(layer); },
+  toast(t){ const el=document.createElement("div"); el.className="toast"; el.setAttribute("role","status"); el.textContent=t;
+    document.body.appendChild(el); setTimeout(()=>el.remove(),2400); }
+};
+
 /* ---------- Arranque ---------- */
 function boot(){
-  Store.load(); Voice.init(); Pwa.init();
+  Store.load(); Voice.init(); Pwa.init(); Spooky.apply(Store.data.spooky,false);
+  $("#starPill").addEventListener("click",()=>Spooky.tap());
   $("#homeBtn").onclick=()=>Game.map();
   $("#voiceBtn").onclick=()=>{ Store.data.voice=!Store.data.voice; Store.save(); Game.header(); if(!Store.data.voice) try{speechSynthesis.cancel()}catch(e){} };
   $("#soundBtn").onclick=()=>{ Store.data.sound=!Store.data.sound; Store.save(); Game.header(); };
-  document.addEventListener("keydown",e=>{ if(!Game.st||Game.st.locked){ if(e.key==="Enter"&&$("#nx")) $("#nx").click(); return; }
+  document.addEventListener("keydown",e=>{ if(/^[a-z]$/i.test(e.key)) Spooky.key(e.key); if(!Game.st||Game.st.locked){ if(e.key==="Enter"&&$("#nx")) $("#nx").click(); return; }
     if(/^[0-9]$/.test(e.key)) Game.key(e.key); else if(e.key==="Backspace") Game.key("del"); else if(e.key==="Enter") Game.key("ok"); });
   Game.map();
 }

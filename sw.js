@@ -3,7 +3,7 @@
    - Fuentes de Google: caché primero y se actualizan en segundo plano.
    Al publicar cambios grandes, sube VERSION para limpiar cachés antiguos. */
 "use strict";
-const VERSION = "v1";
+const VERSION = "v3";
 const APP_CACHE = `app-${VERSION}`;
 const FONT_CACHE = "fonts-v1";
 const NETWORK_TIMEOUT_MS = 3000;
