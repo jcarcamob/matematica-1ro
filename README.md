@@ -2,7 +2,7 @@
 
 Juego web para que niños y niñas de **1° básico (Chile)** practiquen matemática jugando. Las preguntas se leen en voz alta y se responden tocando la pantalla, así que sirve aunque el niño todavía esté aprendiendo a leer.
 
-Es un solo archivo HTML: no necesita instalación, servidor ni cuenta.
+Es una página estática: no necesita servidor propio ni cuenta. También es una **PWA**: se puede instalar como app en celular, tablet o computador y funciona sin internet.
 
 ## Contenidos
 
@@ -27,9 +27,18 @@ Los ejercicios siguen los temas y las representaciones del Texto del Estudiante 
 
 ## Usarlo
 
-Abre `index.html` en cualquier navegador moderno (doble clic).
+- **Rápido:** abre `index.html` en cualquier navegador moderno (doble clic). Así se puede jugar, pero no instalar como app.
+- **Local con PWA:** sirve la carpeta con `python3 -m http.server 8000` y abre `http://localhost:8000`.
+- **Publicado:** con GitHub Pages en **Settings › Pages › Deploy from a branch**, rama `main`, carpeta `/ (root)`.
 
-Para publicarlo con GitHub Pages: **Settings › Pages › Deploy from a branch**, rama `main`, carpeta `/ (root)`.
+### Instalar como app (PWA)
+
+La instalación necesita HTTPS (por ejemplo GitHub Pages) o `localhost`.
+
+- **Android y computador (Chrome o Edge):** en **"Para papás, mamás y profes"** aparece el botón **Instalar en este dispositivo**. También se puede instalar desde el menú del navegador.
+- **iPhone y iPad:** abre la página en Safari y elige **Compartir › Agregar a inicio**.
+
+Después de la primera visita con internet, el juego funciona sin conexión, incluidas las fuentes.
 
 ### Voz
 
@@ -41,18 +50,29 @@ El juego usa la síntesis de voz del navegador y elige sola la voz femenina más
 ## Privacidad
 
 - No pide nombre, edad ni ningún dato del niño.
-- No envía información a ningún servidor. La única petición externa es la descarga de las fuentes tipográficas desde Google Fonts. Si no carga, el juego usa fuentes del sistema.
+- No envía información a ningún servidor. La única petición externa es la descarga de las fuentes tipográficas desde Google Fonts. Después queda en la caché del dispositivo, y si no carga, el juego usa fuentes del sistema.
+- Tiene una política de seguridad de contenido (CSP) estricta: solo ejecuta scripts del propio sitio y solo permite Google Fonts como origen externo.
 - El progreso (estrellas y voz elegida) se guarda solo en el `localStorage` del navegador.
 
 ## Estructura
 
-Todo está en `index.html`, organizado en módulos:
+```
+index.html             estructura de la página y CSP
+styles.css             estilos (modo claro y oscuro)
+app.js                 lógica del juego
+sw.js                  service worker (modo sin conexión)
+manifest.webmanifest   datos de la app instalable
+icons/                 íconos de la app
+```
+
+`app.js` está organizado en módulos:
 
 - `Store`: progreso local.
 - `Voice` y `Sfx`: voz y sonidos.
 - `Draw`: material concreto y pictórico (SVG y CSS).
 - `WORLDS`: generadores de preguntas.
 - `Game`: motor de rondas y pantallas.
+- `Pwa`: registro del service worker y botón de instalar.
 
 ## Contribuir
 

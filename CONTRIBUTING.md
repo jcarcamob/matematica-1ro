@@ -13,9 +13,10 @@ Abre un *issue* e incluye:
 ## Proponer cambios
 
 1. Haz un *fork* y crea una rama: `git checkout -b mejora/nombre-corto`.
-2. Haz tus cambios en `index.html`.
-3. Pruébalo abriendo el archivo en el navegador, en pantalla de computador y de celular, y en modo claro y oscuro.
-4. Abre un *pull request* explicando qué cambiaste y por qué.
+2. Haz tus cambios (la lógica está en `app.js` y los estilos en `styles.css`).
+3. Pruébalo con `python3 -m http.server 8000` en `http://localhost:8000`, en pantalla de computador y de celular, en modo claro y oscuro, y sin conexión (DevTools › Network › Offline).
+4. Si agregas un archivo nuevo, súmalo a la lista `SHELL` de `sw.js` y sube `VERSION` (por ejemplo `v1` → `v2`) para que los dispositivos instalados lo descarguen.
+5. Abre un *pull request* explicando qué cambiaste y por qué.
 
 ## Agregar un tipo de pregunta
 
@@ -49,7 +50,8 @@ for (let i = 0; i < 500; i++) {
 
 - **Pedagogía:** que el ejercicio corresponda a 1° básico y use las representaciones del texto escolar (decenas y unidades, recta numérica, pictogramas, unidades no estandarizadas).
 - **Lenguaje:** frases cortas y simples, en español de Chile.
-- **Sin dependencias:** el juego debe seguir siendo un solo archivo que funciona sin conexión.
+- **Sin dependencias:** sin frameworks ni paso de compilación. El juego debe seguir funcionando sin conexión.
+- **CSP:** no agregues scripts en línea (`<script>…</script>` u `onclick="…"`) ni orígenes externos. La CSP de `index.html` los bloquea a propósito.
 - **Privacidad:** no agregar analítica, cookies, servicios externos ni campos que pidan datos del niño.
 - **Seguridad:** no insertar texto externo con `innerHTML` sin pasarlo por `esc()`.
 - **Derechos de autor:** no copiar imágenes, personajes ni textos de los libros. Los ejercicios deben ser originales.
